@@ -22,6 +22,7 @@ public class ZWaveCommandClassValueEvent extends ZWaveEvent {
     private final CommandClass commandClass;
     private final Object value;
     private final Object type;
+    private String source; 
 
     /**
      * Constructor. Creates a new instance of the ZWaveCommandClassValueEvent class.
@@ -37,6 +38,42 @@ public class ZWaveCommandClassValueEvent extends ZWaveEvent {
         this.commandClass = commandClass;
         this.value = value;
         this.type = null;
+        this.source = "unspecified";
+    }
+    
+    /**
+     * Constructor. Creates a new instance of the ZWaveCommandClassValueEvent class.
+     *
+     * @param nodeId the nodeId of the event
+     * @param endpoint the endpoint of the event.
+     * @param commandClass the command class that fired the ZWaveCommandClassValueEvent;
+     * @param value the value for the event.
+     */
+    public ZWaveCommandClassValueEvent(String source, int nodeId, int endpoint, CommandClass commandClass, Object value) {
+    	super(nodeId, endpoint);
+    	
+    	this.commandClass = commandClass;
+    	this.value = value;
+    	this.type = null;
+    	this.source = source;
+    }
+    /**
+     * Constructor. Creates a new instance of the ZWaveCommandClassValueEvent class.
+     *
+     * @param nodeId the nodeId of the event
+     * @param endpoint the endpoint of the event.
+     * @param commandClass the command class that fired the ZWaveCommandClassValueEvent;
+     * @param value the value for the event.
+     * @param type the type of event (normally an enum that provides information on the event type)
+     * 
+     */
+    public ZWaveCommandClassValueEvent(String source, int nodeId, int endpoint, CommandClass commandClass, Object value, Object type) {
+    	super(nodeId, endpoint);
+    	
+    	this.commandClass = commandClass;
+    	this.value = value;
+    	this.type = type;
+    	this.source = source;
     }
 
     /**
@@ -54,8 +91,18 @@ public class ZWaveCommandClassValueEvent extends ZWaveEvent {
         this.commandClass = commandClass;
         this.value = value;
         this.type = type;
+        this.source = "unspecified";
     }
-
+    
+    /**
+     * Gets the source adapter the message arrived on
+     * 
+     * @return the identifier of the adapter
+     */
+    public String getMessageSource() {
+		return source;
+	}
+    
     /**
      * Gets the command class that fired the ZWaveCommandClassValueEvent;
      *

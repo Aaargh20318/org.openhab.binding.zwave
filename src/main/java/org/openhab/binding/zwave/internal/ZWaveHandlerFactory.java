@@ -10,6 +10,9 @@ package org.openhab.binding.zwave.internal;
 
 import static org.openhab.binding.zwave.ZWaveBindingConstants.CONTROLLER_SERIAL;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.smarthome.core.thing.Bridge;
 import org.eclipse.smarthome.core.thing.Thing;
 import org.eclipse.smarthome.core.thing.ThingTypeUID;
@@ -29,6 +32,9 @@ import org.slf4j.LoggerFactory;
  */
 public class ZWaveHandlerFactory extends BaseThingHandlerFactory {
     private Logger logger = LoggerFactory.getLogger(BaseThingHandlerFactory.class);
+    
+    private static Object lock = new Object();
+    private static final List<ZWaveSerialHandler> bridges = new ArrayList<>(2); 
 
     @Override
     public boolean supportsThingType(ThingTypeUID thingTypeUID) {
@@ -47,10 +53,20 @@ public class ZWaveHandlerFactory extends BaseThingHandlerFactory {
 
         // Handle controllers here
         if (thingTypeUID.equals(CONTROLLER_SERIAL)) {
-            return new ZWaveSerialHandler((Bridge) thing);
+            ZWaveSerialHandler handler = new ZWaveSerialHandler((Bridge) thing);
+            synchronized(lock) {
+            		bridges.add(handler);
+            }
+            return handler;
         }
 
         // Everything else gets handled in a single handler
         return new ZWaveThingHandler(thing);
     }
+    
+    public static List<ZWaveSerialHandler> getBridges() {
+        synchronized(lock) {
+        		return new ArrayList<>(bridges);
+        }
+	}
 }

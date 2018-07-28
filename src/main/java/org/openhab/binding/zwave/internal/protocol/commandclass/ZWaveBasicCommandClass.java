@@ -40,11 +40,12 @@ public class ZWaveBasicCommandClass extends ZWaveCommandClass implements ZWaveBa
     @XStreamOmitField
     private final static Logger logger = LoggerFactory.getLogger(ZWaveBasicCommandClass.class);
 
-    private static final int BASIC_SET = 0x01;
-    private static final int BASIC_GET = 0x02;
-    private static final int BASIC_REPORT = 0x03;
+    public static final int BASIC_SET = 0x01;
+    public static final int BASIC_GET = 0x02;
+    public static final int BASIC_REPORT = 0x03;
 
     private boolean isGetSupported = true;
+    private int type = 0;
 
     /**
      * Creates a new instance of the ZWaveBasicCommandClass class.
@@ -75,6 +76,7 @@ public class ZWaveBasicCommandClass extends ZWaveCommandClass implements ZWaveBa
             throws ZWaveSerialMessageException {
         logger.debug("NODE {}: Received Basic Request", this.getNode().getNodeId());
         int command = serialMessage.getMessagePayloadByte(offset);
+        type = command;
         switch (command) {
             case BASIC_SET:
                 logger.debug("NODE {}: Basic Set sent to the controller will be processed as Basic Report",
@@ -106,8 +108,8 @@ public class ZWaveBasicCommandClass extends ZWaveCommandClass implements ZWaveBa
             throws ZWaveSerialMessageException {
         int value = serialMessage.getMessagePayloadByte(offset + 1);
         logger.debug(String.format("NODE %d: Basic report, value = 0x%02X", this.getNode().getNodeId(), value));
-        ZWaveCommandClassValueEvent zEvent = new ZWaveCommandClassValueEvent(this.getNode().getNodeId(), endpoint,
-                this.getCommandClass(), value);
+        ZWaveCommandClassValueEvent zEvent = new ZWaveCommandClassValueEvent(serialMessage.getMessageSource(), this.getNode().getNodeId(), endpoint,
+                this.getCommandClass(), value, Integer.valueOf(type));
         this.getController().notifyEventListeners(zEvent);
     }
 
@@ -131,6 +133,10 @@ public class ZWaveBasicCommandClass extends ZWaveCommandClass implements ZWaveBa
         result.setMessagePayload(newPayload);
         return result;
     }
+    
+    public int getType() {
+		return type;
+	}
 
     @Override
     public boolean setOptions(Map<String, String> options) {

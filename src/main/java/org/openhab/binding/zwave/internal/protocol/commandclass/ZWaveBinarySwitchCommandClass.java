@@ -50,6 +50,7 @@ public class ZWaveBinarySwitchCommandClass extends ZWaveCommandClass
     private boolean dynamicDone = false;
 
     private boolean isGetSupported = true;
+    private int type = 0;
 
     /**
      * Creates a new instance of the ZWaveBinarySwitchCommandClass class.
@@ -80,6 +81,7 @@ public class ZWaveBinarySwitchCommandClass extends ZWaveCommandClass
             throws ZWaveSerialMessageException {
         logger.debug(String.format("Received Switch Binary Request for Node ID = %d", this.getNode().getNodeId()));
         int command = serialMessage.getMessagePayloadByte(offset);
+        this.type = command;
         switch (command) {
             case SWITCH_BINARY_SET:
                 logger.debug("NODE {}: Switch Binary SET", this.getNode().getNodeId());
@@ -106,8 +108,8 @@ public class ZWaveBinarySwitchCommandClass extends ZWaveCommandClass
             throws ZWaveSerialMessageException {
         int value = serialMessage.getMessagePayloadByte(offset + 1);
         logger.debug("NODE {}: Switch Binary report, value = {}", this.getNode().getNodeId(), value);
-        ZWaveCommandClassValueEvent zEvent = new ZWaveCommandClassValueEvent(this.getNode().getNodeId(), endpoint,
-                this.getCommandClass(), value);
+        ZWaveCommandClassValueEvent zEvent = new ZWaveCommandClassValueEvent(serialMessage.getMessageSource(),this.getNode().getNodeId(), endpoint,
+                this.getCommandClass(), value, Integer.valueOf(type));
         this.getController().notifyEventListeners(zEvent);
     }
 

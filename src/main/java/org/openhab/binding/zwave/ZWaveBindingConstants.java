@@ -31,6 +31,7 @@ public class ZWaveBindingConstants {
     public final static ThingTypeUID CONTROLLER_SERIAL = new ThingTypeUID(BINDING_ID, "serial_zstick");
 
     public final static String CONFIGURATION_PORT = "port";
+    public final static String CONFIGURATION_IDENTIFIER = "identifier";
     public final static String CONFIGURATION_MASTER = "controller_master";
     public final static String CONFIGURATION_SUC = "controller_suc";
     public final static String CONFIGURATION_NETWORKKEY = "security_networkkey";

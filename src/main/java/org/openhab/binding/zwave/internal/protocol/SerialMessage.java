@@ -43,6 +43,7 @@ public class SerialMessage {
     private final static Logger logger = LoggerFactory.getLogger(SerialMessage.class);
     private final static AtomicLong sequence = new AtomicLong();
 
+    private String source = "unknown";
     private long sequenceNumber;
     private byte[] messagePayload;
     private int messageLength = 0;
@@ -127,8 +128,20 @@ public class SerialMessage {
      *
      * @param buffer the buffer to create the SerialMessage from.
      */
+    public SerialMessage(String source, byte[] buffer) {
+        this(255, buffer);
+        this.source = source;
+    }
+    
+    /**
+     * Constructor. Creates a new instance of the SerialMessage class from a
+     * specified buffer.
+     *
+     * @param buffer the buffer to create the SerialMessage from.
+     */
     public SerialMessage(byte[] buffer) {
         this(255, buffer);
+        this.source = "unknown";
     }
 
     /**
@@ -159,6 +172,15 @@ public class SerialMessage {
         this.messageNode = nodeId;
         logger.trace("NODE {}: Message payload = {}", getMessageNode(), SerialMessage.bb2hex(messagePayload));
     }
+    
+    /**
+     * Gets the source of the serial message
+     * 
+     * @return the source of the message
+     */
+    public String getMessageSource() {
+		return source;
+	}
 
     /**
      * Converts a byte array to a hexadecimal string representation

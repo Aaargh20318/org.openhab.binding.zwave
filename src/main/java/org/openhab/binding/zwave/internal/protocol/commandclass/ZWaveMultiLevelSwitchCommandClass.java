@@ -64,7 +64,7 @@ public class ZWaveMultiLevelSwitchCommandClass extends ZWaveCommandClass
     private boolean dynamicDone = false;
 
     private boolean isGetSupported = true;
-
+    
     /**
      * Creates a new instance of the ZWaveMultiLevelSwitchCommandClass class.
      *
@@ -101,7 +101,7 @@ public class ZWaveMultiLevelSwitchCommandClass extends ZWaveCommandClass
             case SWITCH_MULTILEVEL_REPORT:
                 int value = serialMessage.getMessagePayloadByte(offset + 1);
                 logger.debug("NODE {}: Switch Multi Level report, value = {}", getNode().getNodeId(), value);
-                ZWaveCommandClassValueEvent zEvent = new ZWaveCommandClassValueEvent(getNode().getNodeId(), endpoint,
+                ZWaveCommandClassValueEvent zEvent = new ZWaveCommandClassValueEvent(serialMessage.getMessageSource(),getNode().getNodeId(), endpoint,
                         getCommandClass(), value);
 
                 getController().notifyEventListeners(zEvent);

@@ -425,7 +425,8 @@ public class ZWaveController {
             // Did the node deserialise ok?
             if (node != null) {
                 // Sanity check the data from the file
-                if (node.getManufacturer() == Integer.MAX_VALUE || node.getHomeId() != controller.homeId
+                if (node.getManufacturer() == Integer.MAX_VALUE 
+//                		|| node.getHomeId() != controller.homeId
                         || node.getNodeId() != nodeId) {
                     logger.warn("NODE {}: Restore from config: Error. Data invalid, ignoring config.", nodeId);
                     node = null;
@@ -438,11 +439,13 @@ public class ZWaveController {
 
                     // Set the controller and node references for all command classes
                     for (ZWaveCommandClass commandClass : node.getCommandClasses()) {
+                        logger.debug("NODE {}: node has command class {}.", nodeId,commandClass.getClass().getName());
                         commandClass.setController(controller);
                         commandClass.setNode(node);
 
                         // Handle event handlers
                         if (commandClass instanceof ZWaveEventListener) {
+                            logger.debug("NODE {}: Adding event listener {}.", nodeId,commandClass.getClass().getName());
                             controller.addEventListener((ZWaveEventListener) commandClass);
                         }
 
@@ -564,8 +567,10 @@ public class ZWaveController {
         logger.debug("Notifying event listeners: {}", event.getClass().getSimpleName());
         ArrayList<ZWaveEventListener> copy = new ArrayList<ZWaveEventListener>(zwaveEventListeners);
         for (ZWaveEventListener listener : copy) {
+            logger.debug("Notifying event listener: {}", listener.getClass().getSimpleName());
             listener.ZWaveIncomingEvent(event);
         }
+        logger.debug("Have {} listeners",copy.size());
 
         // We also need to handle the inclusion internally within the controller
         if (event instanceof ZWaveInclusionEvent) {

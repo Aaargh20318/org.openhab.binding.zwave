@@ -42,6 +42,13 @@
                 <default></default>
             </parameter>
 
+            <parameter name="identifier" type="text" required="true"
+                groupName="network">
+                <label>Identifier</label>
+                <description>Sets a unique identifier for the Z-Wave stick</description>
+                <default></default>
+            </parameter>
+
             <parameter name="controller_master" type="boolean" groupName="network">
                 <label>Controller is Master</label>
                 <description><![CDATA[This controller is the master controller in the network.<br/>

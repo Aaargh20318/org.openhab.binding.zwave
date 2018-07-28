@@ -578,6 +578,7 @@ public abstract class ZWaveControllerHandler extends BaseBridgeHandler implement
         if (controller == null) {
             return;
         }
+        logger.debug("Message incoming on "+serialMessage.getMessageSource());
         controller.incomingPacket(serialMessage);
     }
 

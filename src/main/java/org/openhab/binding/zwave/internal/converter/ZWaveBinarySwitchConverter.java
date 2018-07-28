@@ -69,6 +69,7 @@ public class ZWaveBinarySwitchConverter extends ZWaveCommandClassConverter {
      */
     @Override
     public State handleEvent(ZWaveThingChannel channel, ZWaveCommandClassValueEvent event) {
+
         return (Integer) event.getValue() == 0 ? OnOffType.OFF : OnOffType.ON;
     }
 

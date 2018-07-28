@@ -46,6 +46,8 @@ public class ZWaveSerialHandler extends ZWaveControllerHandler {
     private Logger logger = LoggerFactory.getLogger(ZWaveSerialHandler.class);
 
     private String portId;
+    
+    private String identifier;
 
     private SerialPort serialPort;
 
@@ -74,6 +76,8 @@ public class ZWaveSerialHandler extends ZWaveControllerHandler {
             logger.error("ZWave port is not set.");
             return;
         }
+
+        identifier = (String) getConfig().get(CONFIGURATION_IDENTIFIER);
 
         super.initialize();
         logger.info("Connecting to serial port '{}'", portId);
@@ -199,7 +203,7 @@ public class ZWaveSerialHandler extends ZWaveControllerHandler {
          */
         @Override
         public void run() {
-            logger.debug("Starting ZWave thread: Receive");
+            logger.debug("Starting ZWave thread: Receive for "+identifier);
             try {
                 // Send a NAK to resynchronise communications
                 sendResponse(NAK);
@@ -300,7 +304,7 @@ public class ZWaveSerialHandler extends ZWaveControllerHandler {
                             }
 
                             logger.debug("Receive Message = {}", SerialMessage.bb2hex(rxBuffer));
-                            SerialMessage recvMessage = new SerialMessage(rxBuffer);
+                            SerialMessage recvMessage = new SerialMessage(identifier,rxBuffer);
                             if (recvMessage.isValid) {
                                 logger.trace("Message is valid, sending ACK");
                                 sendResponse(ACK);
@@ -338,8 +342,8 @@ public class ZWaveSerialHandler extends ZWaveControllerHandler {
             return;
         }
 
-        logger.debug("NODE {}: Sending REQUEST Message = {}", serialMessage.getMessageNode(),
-                SerialMessage.bb2hex(buffer));
+        logger.debug("NODE {}: Sending REQUEST Message over {} = {}", serialMessage.getMessageNode(),
+                identifier, SerialMessage.bb2hex(buffer));
 
         try {
             synchronized (serialPort.getOutputStream()) {
