@@ -20,11 +20,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 
 import org.eclipse.smarthome.config.core.Configuration;
 import org.eclipse.smarthome.config.core.status.ConfigStatusMessage;
@@ -45,7 +45,6 @@ import org.eclipse.smarthome.core.types.State;
 import org.openhab.binding.zwave.ZWaveBindingConstants;
 import org.openhab.binding.zwave.handler.ZWaveThingChannel.DataType;
 import org.openhab.binding.zwave.internal.ZWaveConfigProvider;
-import org.openhab.binding.zwave.internal.ZWaveHandlerFactory;
 import org.openhab.binding.zwave.internal.ZWaveProduct;
 import org.openhab.binding.zwave.internal.protocol.SerialMessage;
 import org.openhab.binding.zwave.internal.protocol.ZWaveAssociation;
@@ -54,15 +53,12 @@ import org.openhab.binding.zwave.internal.protocol.ZWaveConfigurationParameter;
 import org.openhab.binding.zwave.internal.protocol.ZWaveEventListener;
 import org.openhab.binding.zwave.internal.protocol.ZWaveNode;
 import org.openhab.binding.zwave.internal.protocol.ZWaveNodeState;
-import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveBasicCommandClass;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveCommandClass.CommandClass;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveConfigurationCommandClass;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveConfigurationCommandClass.ZWaveConfigurationParameterEvent;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveDoorLockCommandClass;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveNodeNamingCommandClass;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWavePlusCommandClass;
-import org.openhab.binding.zwave.internal.protocol.commandclass.ZWavePowerLevelCommandClass;
-import org.openhab.binding.zwave.internal.protocol.commandclass.ZWavePowerLevelCommandClass.ZWavePowerLevelCommandClassChangeEvent;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveSwitchAllCommandClass;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveUserCodeCommandClass;
 import org.openhab.binding.zwave.internal.protocol.commandclass.ZWaveWakeUpCommandClass;
@@ -735,34 +731,6 @@ public class ZWaveThingHandler extends ConfigStatusThingHandler implements ZWave
 							.setValueMessage(Integer.parseInt(configurationParameter.getValue().toString())));
 				}
 				pendingCfg.put(configurationParameter.getKey(), valueObject);
-			} else if ("powerlevel".equals(cfg[0])) {
-				ZWavePowerLevelCommandClass powerlevelCommandClass = (ZWavePowerLevelCommandClass) node
-						.getCommandClass(CommandClass.POWERLEVEL);
-				if (powerlevelCommandClass == null) {
-					logger.debug("NODE {}: Error getting PowerLevelCommandClass", nodeId);
-					continue;
-				}
-
-				// Since both level and timeout are set in a single command, we first check if the value exists in the
-				// pending list, and if not, use the value already stored in the command class
-				if ("level".equals(cfg[1])) {
-					Integer timeout = (Integer) pendingCfg.get(ZWaveBindingConstants.CONFIGURATION_POWERLEVEL_TIMEOUT);
-					if (timeout == null) {
-						timeout = powerlevelCommandClass.getTimeout();
-					}
-					controllerHandler.sendData(powerlevelCommandClass.setValueMessage(
-							(Integer.parseInt(configurationParameter.getValue().toString())), timeout));
-				}
-				if ("timeout".equals(cfg[1])) {
-					Integer level = (Integer) pendingCfg.get(ZWaveBindingConstants.CONFIGURATION_POWERLEVEL_LEVEL);
-					if (level == null) {
-						level = powerlevelCommandClass.getLevel();
-					}
-					controllerHandler.sendData(powerlevelCommandClass.setValueMessage(level,
-							(Integer.parseInt(configurationParameter.getValue().toString()))));
-				}
-				controllerHandler.sendData(powerlevelCommandClass.getValueMessage());
-				pendingCfg.put(configurationParameter.getKey(), valueObject);
 			} else if ("doorlock".equals(cfg[0])) {
 				ZWaveDoorLockCommandClass commandClass = (ZWaveDoorLockCommandClass) node
 						.getCommandClass(CommandClass.DOOR_LOCK);
@@ -829,17 +797,14 @@ public class ZWaveThingHandler extends ConfigStatusThingHandler implements ZWave
 					startPolling();
 				}
 			} else if ("action".equals(cfg[0])) {
-				if ("failed".equals(cfg[1]) && valueObject instanceof BigDecimal
-						&& ((BigDecimal) valueObject).intValue() == ZWaveBindingConstants.ACTION_CHECK_VALUE) {
+                if ("failed".equals(cfg[1]) && valueObject instanceof Boolean && ((Boolean) valueObject) == true) {
 					controllerHandler.replaceFailedNode(nodeId);
 				}
-				if ("remove".equals(cfg[1]) && valueObject instanceof BigDecimal
-						&& ((BigDecimal) valueObject).intValue() == ZWaveBindingConstants.ACTION_CHECK_VALUE) {
+                if ("remove".equals(cfg[1]) && valueObject instanceof Boolean && ((Boolean) valueObject) == true) {
 					controllerHandler.removeFailedNode(nodeId);
 					controllerHandler.checkNodeFailed(nodeId);
 				}
-				if ("reinit".equals(cfg[1]) && valueObject instanceof BigDecimal
-						&& ((BigDecimal) valueObject).intValue() == ZWaveBindingConstants.ACTION_CHECK_VALUE) {
+                if ("reinit".equals(cfg[1]) && valueObject instanceof Boolean && ((Boolean) valueObject) == true) {
 					logger.debug("NODE {}: Re-initialising node!", nodeId);
 
 					// Delete the saved XML
@@ -849,15 +814,14 @@ public class ZWaveThingHandler extends ConfigStatusThingHandler implements ZWave
 					controllerHandler.reinitialiseNode(nodeId);
 				}
 
-				if ("heal".equals(cfg[1]) && valueObject instanceof BigDecimal
-						&& ((BigDecimal) valueObject).intValue() == ZWaveBindingConstants.ACTION_CHECK_VALUE) {
+                if ("heal".equals(cfg[1]) && valueObject instanceof Boolean && ((Boolean) valueObject) == true) {
 					logger.debug("NODE {}: Starting heal on node!", nodeId);
 
 					controllerHandler.healNode(nodeId);
 				}
 
 				// Don't save the value
-				valueObject = "";
+                valueObject = false;
 			} else {
 				logger.debug("NODE{}: Configuration invalid {}", nodeId, configurationParameter.getKey());
 			}
@@ -1061,15 +1025,6 @@ public class ZWaveThingHandler extends ConfigStatusThingHandler implements ZWave
 				default:
 					break;
 				}
-				break;
-
-			case POWERLEVEL:
-				ZWavePowerLevelCommandClassChangeEvent powerEvent = (ZWavePowerLevelCommandClassChangeEvent) event;
-				cfgUpdated = true;
-				configuration.put(ZWaveBindingConstants.CONFIGURATION_POWERLEVEL_LEVEL, powerEvent.getLevel());
-				pendingCfg.remove(ZWaveBindingConstants.CONFIGURATION_POWERLEVEL_LEVEL);
-				configuration.put(ZWaveBindingConstants.CONFIGURATION_POWERLEVEL_TIMEOUT, powerEvent.getTimeout());
-				pendingCfg.remove(ZWaveBindingConstants.CONFIGURATION_POWERLEVEL_TIMEOUT);
 				break;
 
 			default:
@@ -1380,12 +1335,12 @@ public class ZWaveThingHandler extends ConfigStatusThingHandler implements ZWave
 
 			// Build the configuration value
 			for (ZWaveAssociation groupMember : group.getAssociations()) {
-				logger.debug("NODE {}: Update ASSOCIATION group_{}: Adding node_{}_{}", nodeId, group,
+                logger.debug("NODE {}: Update ASSOCIATION group_{}: Adding node_{}_{}", nodeId, group.getIndex(),
 						groupMember.getNode(), groupMember.getEndpoint());
 				members.add("node_" + groupMember.getNode() + "_" + groupMember.getEndpoint());
 			}
 
-			config.put("group_" + group, members);
+            config.put("group_" + group.getIndex(), members);
 		}
 
 		// Process WAKE_UP
@@ -1425,7 +1380,7 @@ public class ZWaveThingHandler extends ConfigStatusThingHandler implements ZWave
 		for (String property : config.getProperties().keySet()) {
 			logger.debug("NODE {}: Property to update: {}, {}, {}", nodeId, property, config.get(property),
 					originalConfig.get(property));
-			if (config.get(property).equals(originalConfig.get(property)) == false) {
+            if (!Objects.equals(config.get(property), originalConfig.get(property))) {
 				update = true;
 				break;
 			}

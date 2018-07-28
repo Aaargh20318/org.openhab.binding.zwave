@@ -8,6 +8,7 @@
   <thing-type id="popp_009402_00_000" listed="false">
     <label>009402 10 Year Smoke Detector with Siren Function</label>
     <description>10 Year Smoke Detector with Siren Function</description>
+    <category>SmokeDetector</category>
 
     <!-- CHANNEL DEFINITIONS -->
     <channels>
@@ -23,10 +24,10 @@
           <property name="binding:*:OnOffType">SENSOR_BINARY</property>
         </properties>
       </channel>
-      <channel id="alarm_general" typeId="alarm_general">
-        <label>Alarm (general)</label>
+      <channel id="alarm_smoke" typeId="alarm_smoke">
+        <label>Smoke Alarm</label>
         <properties>
-          <property name="binding:*:OnOffType">ALARM,BASIC;type=GENERAL</property>
+          <property name="binding:*:OnOffType">ALARM,BASIC;type=SMOKE</property>
         </properties>
       </channel>
       <channel id="battery-level" typeId="system.battery-level">

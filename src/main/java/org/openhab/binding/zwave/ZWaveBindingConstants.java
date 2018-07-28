@@ -47,9 +47,6 @@ public class ZWaveBindingConstants {
     public final static String CONFIGURATION_NODENAME = "nodename_name";
     public final static String CONFIGURATION_NODELOCATION = "nodename_location";
 
-    public final static String CONFIGURATION_POWERLEVEL_LEVEL = "powerlevel_level";
-    public final static String CONFIGURATION_POWERLEVEL_TIMEOUT = "powerlevel_timeout";
-
     public final static String CONFIGURATION_USERCODE = "usercode_";
 
     public final static String CONFIGURATION_DOORLOCKTIMEOUT = "doorlock_timeout";
@@ -159,8 +156,6 @@ public class ZWaveBindingConstants {
             "Set the minimum polling period for this device<BR/>"
                     + "Note that the polling period may be longer than set since the binding treats "
                     + "polls as the lowest priority data within the network.");
-
-    public final static Integer ACTION_CHECK_VALUE = new Integer(-232323);
 
     public final static Set<ThingTypeUID> SUPPORTED_BRIDGE_TYPES_UIDS = ImmutableSet.of(CONTROLLER_SERIAL);
 

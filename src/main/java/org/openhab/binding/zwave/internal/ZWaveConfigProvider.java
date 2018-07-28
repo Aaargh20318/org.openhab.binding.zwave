@@ -147,8 +147,8 @@ public class ZWaveConfigProvider implements ConfigDescriptionProvider, ConfigOpt
         List<ConfigDescriptionParameterGroup> groups = new ArrayList<ConfigDescriptionParameterGroup>();
         List<ConfigDescriptionParameter> parameters = new ArrayList<ConfigDescriptionParameter>();
 
-        groups.add(new ConfigDescriptionParameterGroup("actions", "", false, "Actions", null));
-        groups.add(new ConfigDescriptionParameterGroup("thingcfg", "home", false, "Device Configuration", null));
+        groups.add(new ConfigDescriptionParameterGroup("actions", "", false, "Actions", ""));
+        groups.add(new ConfigDescriptionParameterGroup("thingcfg", "home", false, "Device Configuration", ""));
 
         List<ParameterOption> options = new ArrayList<ParameterOption>();
         options.add(new ParameterOption("600", "10 Minutes"));
@@ -173,7 +173,7 @@ public class ZWaveConfigProvider implements ConfigDescriptionProvider, ConfigOpt
         ZWaveWakeUpCommandClass wakeupCmdClass = (ZWaveWakeUpCommandClass) node
                 .getCommandClass(ZWaveCommandClass.CommandClass.WAKE_UP);
         if (wakeupCmdClass != null) {
-            groups.add(new ConfigDescriptionParameterGroup("wakeup", "sleep", false, "Wakeup Configuration", null));
+            groups.add(new ConfigDescriptionParameterGroup("wakeup", "sleep", false, "Wakeup Configuration", ""));
 
             parameters.add(ConfigDescriptionParameterBuilder
                     .create(ZWaveBindingConstants.CONFIGURATION_WAKEUPINTERVAL, Type.INTEGER)
@@ -220,33 +220,6 @@ public class ZWaveConfigProvider implements ConfigDescriptionProvider, ConfigOpt
                     .withGroupName("thingcfg").withOptions(options).withLimitToOptions(true).build());
         }
 
-        // If we support the powerlevel class, then add the configuration
-        if (node.getCommandClass(ZWaveCommandClass.CommandClass.POWERLEVEL) != null) {
-            options = new ArrayList<ParameterOption>();
-            options.add(new ParameterOption("0", "Normal"));
-            options.add(new ParameterOption("1", "Minus 1dB"));
-            options.add(new ParameterOption("2", "Minus 2dB"));
-            options.add(new ParameterOption("3", "Minus 3dB"));
-            options.add(new ParameterOption("4", "Minus 4dB"));
-            options.add(new ParameterOption("5", "Minus 5dB"));
-            options.add(new ParameterOption("6", "Minus 6dB"));
-            options.add(new ParameterOption("7", "Minus 7dB"));
-            options.add(new ParameterOption("8", "Minus 8dB"));
-            options.add(new ParameterOption("9", "Minus 9dB"));
-            parameters.add(ConfigDescriptionParameterBuilder
-                    .create(ZWaveBindingConstants.CONFIGURATION_POWERLEVEL_LEVEL, Type.INTEGER).withLabel("Power Level")
-                    .withDescription(
-                            "Set the RF output level - Normal is maximum power<br>Setting the power to a lower level may be useful to reduce overloading of the receiver in adjacent nodes where they are close together, or if maximum power is not required for battery devices, it may extend battery life by reducing the transmit power.")
-                    .withDefault("0").withGroupName("thingcfg").withOptions(options).withLimitToOptions(true).build());
-
-            parameters.add(ConfigDescriptionParameterBuilder
-                    .create(ZWaveBindingConstants.CONFIGURATION_POWERLEVEL_TIMEOUT, Type.INTEGER)
-                    .withLabel("Power Level Timeout")
-                    .withDescription(
-                            "Set the power level timeout in seconds<br>The node will reset to the normal power level if communications is not made within the specified number of seconds.")
-                    .withDefault("0").withGroupName("thingcfg").build());
-        }
-
         // If we support DOOR_LOCK - add options
         if (node.getCommandClass(ZWaveCommandClass.CommandClass.DOOR_LOCK) != null) {
             parameters.add(ConfigDescriptionParameterBuilder
@@ -258,7 +231,7 @@ public class ZWaveConfigProvider implements ConfigDescriptionProvider, ConfigOpt
         ZWaveUserCodeCommandClass userCodeClass = (ZWaveUserCodeCommandClass) node
                 .getCommandClass(ZWaveCommandClass.CommandClass.USER_CODE);
         if (userCodeClass != null && userCodeClass.getNumberOfSupportedCodes() > 0) {
-            groups.add(new ConfigDescriptionParameterGroup("usercode", "lock", false, "User Code", null));
+            groups.add(new ConfigDescriptionParameterGroup("usercode", "lock", false, "User Code", ""));
 
             for (int code = 1; code <= userCodeClass.getNumberOfSupportedCodes(); code++) {
                 parameters.add(ConfigDescriptionParameterBuilder
@@ -268,32 +241,28 @@ public class ZWaveConfigProvider implements ConfigDescriptionProvider, ConfigOpt
             }
         }
 
-        options = new ArrayList<ParameterOption>();
-        options.add(new ParameterOption(ZWaveBindingConstants.ACTION_CHECK_VALUE.toString(), "Do"));
-
         // If we're FAILED, allow removing from the controller
         // if (node.getNodeState() == ZWaveNodeState.FAILED) {
-        parameters.add(ConfigDescriptionParameterBuilder.create("action_remove", Type.INTEGER)
-                .withLabel("Remove device from controller").withAdvanced(true).withOptions(options)
-                .withDefault("-232323").withGroupName("actions").build());
+        parameters.add(ConfigDescriptionParameterBuilder.create("action_remove", Type.BOOLEAN)
+                .withLabel("Remove device from controller").withAdvanced(true).withOptions(options).withDefault("false")
+                .withGroupName("actions").build());
         // } else {
         // Otherwise, allow us to put this on the failed list
-        parameters.add(ConfigDescriptionParameterBuilder.create("action_failed", Type.INTEGER)
-                .withLabel("Set device as FAILed").withAdvanced(true).withOptions(options).withDefault("-232323")
+        parameters.add(ConfigDescriptionParameterBuilder.create("action_failed", Type.BOOLEAN)
+                .withLabel("Set device as FAILed").withAdvanced(true).withOptions(options).withDefault("false")
                 .withGroupName("actions").build());
         // }
 
         if (node.isInitializationComplete() == true) {
-            parameters.add(ConfigDescriptionParameterBuilder.create("action_reinit", Type.INTEGER)
-                    .withLabel("Reinitialise the device").withAdvanced(true).withOptions(options).withDefault("-232323")
+            parameters.add(ConfigDescriptionParameterBuilder.create("action_reinit", Type.BOOLEAN)
+                    .withLabel("Reinitialise the device").withAdvanced(true).withOptions(options).withDefault("false")
                     .withGroupName("actions").build());
         }
-        parameters.add(ConfigDescriptionParameterBuilder.create("action_heal", Type.INTEGER)
-                .withLabel("Heal the device").withAdvanced(true).withOptions(options).withDefault("-232323")
-                .withGroupName("actions").build());
+        parameters
+                .add(ConfigDescriptionParameterBuilder.create("action_heal", Type.BOOLEAN).withLabel("Heal the device")
+                        .withAdvanced(true).withOptions(options).withDefault("false").withGroupName("actions").build());
 
         return new ConfigDescription(uri, parameters, groups);
-
     }
 
     private static void initialiseZWaveThings() {
@@ -376,24 +345,37 @@ public class ZWaveConfigProvider implements ConfigDescriptionProvider, ConfigOpt
     public static ThingType getThingType(ZWaveNode node) {
         // Check that we know about the registry
         if (thingTypeRegistry == null) {
+            logger.debug("{}: Unable to get thing type as registry not set", node.getNodeId());
             return null;
         }
 
         for (ZWaveProduct product : ZWaveConfigProvider.getProductIndex()) {
+            logger.trace("{}: Checking {}: {}", node.getNodeId(), product.getThingTypeUID(), product);
             if (product.match(node) == true) {
+                logger.trace("{}: Matched {}: {}", node.getNodeId(), product.getThingTypeUID(), product);
                 return thingTypeRegistry.getThingType(product.thingTypeUID);
             }
         }
         return null;
     }
 
+    /**
+     * Gets the configuration parameters for a ZWave Thing. If the thing contains no configuration, it will return null.
+     *
+     * @param type the {@link ThingType} required to retrieve the configuration
+     * @return the {@link ConfigDescription}
+     */
     public static ConfigDescription getThingTypeConfig(ThingType type) {
         // Check that we know about the registry
         if (configDescriptionRegistry == null) {
             return null;
         }
 
-        return configDescriptionRegistry.getConfigDescription(type.getConfigDescriptionURI());
+        URI configUri = type.getConfigDescriptionURI();
+        if (configUri == null) {
+            return null;
+        }
+        return configDescriptionRegistry.getConfigDescription(configUri);
     }
 
     public static Thing getThing(ThingUID thingUID) {

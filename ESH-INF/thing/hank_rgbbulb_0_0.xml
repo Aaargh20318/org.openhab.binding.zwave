@@ -8,6 +8,7 @@
   <thing-type id="hank_rgbbulb_00_000" listed="false">
     <label>RGB bulb HKZW-RGB01-V1.0</label>
     <description>HKZW-RGB01-V1.0</description>
+    <category>LightBulb</category>
 
     <!-- CHANNEL DEFINITIONS -->
     <channels>
@@ -27,7 +28,7 @@
       <channel id="color_color" typeId="color_color">
         <label>Color Control</label>
         <properties>
-          <property name="binding:*:HSBType">COLOR;</property>
+          <property name="binding:*:HSBType">COLOR;colorMode=RGB</property>
           <property name="binding:*:PercentType">SWITCH_MULTILEVEL,BASIC;</property>
           <property name="binding:Command:OnOffType">SWITCH_MULTILEVEL;</property>
         </properties>
@@ -46,7 +47,7 @@
       <property name="vendor">Hank</property>
       <property name="modelId">RGB bulb</property>
       <property name="manufacturerId">0208</property>
-      <property name="manufacturerRef">0100:0004</property>
+      <property name="manufacturerRef">0100:0004,0101:0004</property>
       <property name="dbReference">598</property>
       <property name="defaultAssociations">1</property>
     </properties>
@@ -78,6 +79,7 @@ RGB BULB can send notifications to associated device <br /><h1>Overview</h1><p>R
         ]]></description>
         <default>1</default>
         <options>
+          <option value="0">Notifications Disabled</option>
           <option value="1">Send BASIC REPORT</option>
           <option value="2">Send BASIC REPORT only without status change</option>
         </options>

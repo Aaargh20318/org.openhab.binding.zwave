@@ -8,8 +8,9 @@
   <thing-type id="dlink_dchz510_00_000" listed="false">
     <label>DCH-Z510 Siren</label>
     <description><![CDATA[
-Siren<br /><h2>Inclusion Information</h2><ol><li>Have Z-Wave Controller enter inclusion mode.</li> <li>Pressing tamper key three times within 1.5 seconds to enter the inclusion mode.</li> <li>After add successful, the LED will light ON 1 second </li> </ol><br /><h2>Exclusion Information</h2><ol><li>Have Z-Wave Controller enter exclusion mode.</li> <li>Pressing tamper key three times within 1.5 seconds to enter the exclusion mode.</li> <li>Node ID has been excluded. </li> </ol>
+Siren<br /><h1>Overview</h1><p>The DCH-Z510 mydlink Z-Wave Siren is a wireless siren.</p> <br /><h2>Inclusion Information</h2><ol><li>Have Z-Wave Controller enter inclusion mode.</li> <li>Pressing tamper key three times within 1.5 seconds to enter the inclusion mode.</li> <li>After add successful, the LED will light ON 1 second </li> </ol><br /><h2>Exclusion Information</h2><ol><li>Have Z-Wave Controller enter exclusion mode.</li> <li>Pressing tamper key three times within 1.5 seconds to enter the exclusion mode.</li> <li>Node ID has been excluded. </li> </ol>
     ]]></description>
+    <category>Siren</category>
 
     <!-- CHANNEL DEFINITIONS -->
     <channels>
@@ -19,10 +20,16 @@ Siren<br /><h2>Inclusion Information</h2><ol><li>Have Z-Wave Controller enter in
           <property name="binding:*:OnOffType">SWITCH_BINARY,BASIC</property>
         </properties>
       </channel>
+      <channel id="sensor_binary" typeId="sensor_binary">
+        <label>Binary Sensor</label>
+        <properties>
+          <property name="binding:*:OnOffType">SENSOR_BINARY</property>
+        </properties>
+      </channel>
       <channel id="notification_send" typeId="notification_send">
         <label>Start sound</label>
         <properties>
-          <property name="binding:*:DecimalType">ALARM;event1=SMOKE:1,event2=ACCESS_CONTROL:22,event3=BURGLAR:1,event4=EMERGENCY:1,event5=EMERGENCY:2,event6=EMERGENCY:3</property>
+          <property name="binding:*:DecimalType">ALARM;event1=BURGLAR:1,event2=EMERGENCY:1,event3=EMERGENCY:2,event4=EMERGENCY:3,event5=ACCESS_CONTROL:22,event6=SMOKE:1,event7=EMERGENCY:5,event8=EMERGENCY:254,event9=ACCESS_CONTROL:1,event10=ACCESS_CONTROL:2,event11=ACCESS_CONTROL:3,event12=ACCESS_CONTROL:4</property>
         </properties>
       </channel>
     </channels>

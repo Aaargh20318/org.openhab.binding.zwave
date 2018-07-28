@@ -8,6 +8,7 @@
   <thing-type id="thermofloor_tf016_01_008" listed="false">
     <label>TF016 ZWave Thermostat</label>
     <description>ZWave Thermostat</description>
+    <category>HVAC</category>
 
     <!-- CHANNEL DEFINITIONS -->
     <channels>
@@ -41,6 +42,12 @@
           <property name="binding:*:DecimalType">THERMOSTAT_SETPOINT;type=FURNACE</property>
         </properties>
       </channel>
+      <channel id="config_decimal_param2" typeId="thermofloor_tf016_01_008_config_decimal_param2">
+        <label>Sensor mode</label>
+        <properties>
+          <property name="binding:*:DecimalType">CONFIGURATION;parameter=2</property>
+        </properties>
+      </channel>
     </channels>
 
     <!-- DEVICE PROPERTY DEFINITIONS -->
@@ -48,7 +55,7 @@
       <property name="vendor">ThermoFloor</property>
       <property name="modelId">TF016</property>
       <property name="manufacturerId">019B</property>
-      <property name="manufacturerRef">0001:0001</property>
+      <property name="manufacturerRef">0001:0001,0003:0201</property>
       <property name="versionMin">1.8</property>
       <property name="dbReference">412</property>
       <property name="defaultAssociations">1</property>
@@ -199,6 +206,21 @@
         <option value="11">Economy Heat</option>
         <option value="0">Off</option>
         <option value="1">Heat</option>
+      </options>
+    </state>
+  </channel-type>
+
+  <channel-type id="thermofloor_tf016_01_008_config_decimal_param2">
+    <item-type>Number</item-type>
+    <label>Sensor mode</label>
+    <state pattern="%s">
+      <options>
+        <option value="0">F-mode</option>
+        <option value="1">A-mode</option>
+        <option value="2">AF-mode</option>
+        <option value="3">A2-mode</option>
+        <option value="4">P-mode</option>
+        <option value="5">FP-mode</option>
       </options>
     </state>
   </channel-type>

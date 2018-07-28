@@ -10,11 +10,12 @@
     <description><![CDATA[
 Double Switch 2<br /><h1>Overview</h1><p>FIBARO Switch 2 is designed to be installed in standard wall switch boxes or anywhere else where it is necessary to control electric devices. FIBARO Switch 2 allows to control connected devices either via the Z-Wave+ network or via a switch connected directly to it and is equipped with active power and energy consumption metering functionality.</p> <p>Main features of FIBARO Switch 2:</p> <ul><li>Compatible with any Z-Wave or Z-Wave+ Controller,</li> <li>Supports protected mode (Z-Wave network security mode) with</li> <li>AES-128 encryption,</li> <li>Advanced microprocessor control,</li> <li>Active power and energy metering functionality,</li> <li>Works with various types of switches – momentary, toggle, three-way, etc,</li> <li>To be installed in wall switch boxes of dimensions allowing for installation, conforming to provisions of applicable regulations,</li> <li>FIBARO Switch 2 is an extension unit.</li> </ul><br /><h2>Inclusion Information</h2><p>Put controller into inclusion mode and triple click S1 switch</p> <br /><h2>Exclusion Information</h2><p>Put controller into exclusion mode and triple click S1 switch</p>
     ]]></description>
+    <category>WallSwitch</category>
 
     <!-- CHANNEL DEFINITIONS -->
     <channels>
       <channel id="switch_binary" typeId="switch_binary">
-        <label>Switch</label>
+        <label></label>
         <properties>
           <property name="binding:*:OnOffType">SWITCH_BINARY,BASIC</property>
         </properties>
@@ -31,6 +32,12 @@ Double Switch 2<br /><h1>Overview</h1><p>FIBARO Switch 2 is designed to be insta
           <property name="binding:*:DecimalType">METER;type=E_W</property>
         </properties>
       </channel>
+      <channel id="meter_reset" typeId="meter_reset">
+        <label>Meter Reset</label>
+        <properties>
+          <property name="binding:*:OnOffType">METER;reset=true</property>
+        </properties>
+      </channel>
       <channel id="scene_number" typeId="scene_number">
         <label>Scene Number</label>
         <properties>
@@ -41,6 +48,12 @@ Double Switch 2<br /><h1>Overview</h1><p>FIBARO Switch 2 is designed to be insta
         <label>Alarm</label>
         <properties>
           <property name="binding:*:OnOffType">ALARM</property>
+        </properties>
+      </channel>
+      <channel id="notification_send" typeId="notification_send">
+        <label>Send notification</label>
+        <properties>
+          <property name="binding:*:DecimalType">ALARM;event1=SMOKE:1,event2=ACCESS_CONTROL:22,event3=BURGLAR:1,event4=EMERGENCY:1,event5=EMERGENCY:2,event6=EMERGENCY:3</property>
         </properties>
       </channel>
       <channel id="switch_binary1" typeId="switch_binary">
@@ -243,7 +256,7 @@ Associations in Z-Wave network security mode<br /><h1>Overview</h1><p>This param
         </options>
       </parameter>
 
-      <parameter name="config_28_1" type="integer" groupName="configuration"
+      <parameter name="config_28_1" type="integer" groupName="configuration" readOnly="true"
                  min="0" max="15">
         <label>28: S1 switch - scenes sent</label>
         <description><![CDATA[
@@ -516,7 +529,7 @@ Measuring energy consumed by the device itself<br /><h1>Overview</h1><p>This par
       <parameter name="group_1" type="text" groupName="association">
         <label>1: Lifeline</label>
         <description><![CDATA[
-reports the device status and allows for assigning single device only (main controller by default).<br /><h1>Overview</h1><p>1st association group – “Lifeline” reports the device status and allows for assigning single device only (main controller by default).</p>
+Reports the device status and allows for assigning single device only (main controller by default).<br /><h1>Overview</h1><p>1st association group – “Lifeline” reports the device status and allows for assigning single device only (main controller by default).</p>
         ]]></description>
       </parameter>
 

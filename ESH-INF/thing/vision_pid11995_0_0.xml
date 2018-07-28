@@ -8,6 +8,7 @@
   <thing-type id="vision_pid11995_00_000" listed="false">
     <label>PID11995 Monoprice ZWave On/Off Plugin</label>
     <description>Monoprice ZWave On/Off Plugin</description>
+    <category>PowerOutlet</category>
 
     <!-- CHANNEL DEFINITIONS -->
     <channels>

@@ -8,6 +8,7 @@
   <thing-type id="fibaro_fgss001_00_000" listed="false">
     <label>FGSS001 Smoke Sensor</label>
     <description>Smoke Sensor</description>
+    <category>SmokeDetector</category>
 
     <!-- CHANNEL DEFINITIONS -->
     <channels>
@@ -89,10 +90,10 @@
       <parameter name="config_5_1" type="integer" groupName="configuration">
         <label>5: Type of alarm frame sent to 1-st association group (SMOKE)</label>
         <description>parameter determines a type of command frame sent by the Sensor in case smoke detection has been detected or cancelled</description>
-        <default>-127</default>
+        <default>255</default>
         <options>
-          <option value="-127">BASIC_SET</option>
           <option value="0">ALARM SENSOR (SMOKE)</option>
+          <option value="255">BASIC_SET</option>
         </options>
       </parameter>
 

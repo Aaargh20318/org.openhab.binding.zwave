@@ -6,8 +6,9 @@
                       http://eclipse.org/smarthome/schemas/thing-description/v1.0.0">
 
   <thing-type id="linear_wa105dbz_00_000" listed="false">
-    <label>WA105DBZ Siren</label>
-    <description>Siren</description>
+    <label>WA105DBZ Siren and Strobe</label>
+    <description>Siren and Strobe</description>
+    <category>Siren</category>
 
     <!-- CHANNEL DEFINITIONS -->
     <channels>
@@ -31,7 +32,6 @@
       <property name="manufacturerId">014F</property>
       <property name="manufacturerRef">2005:0503,2009:0903</property>
       <property name="dbReference">365</property>
-      <property name="defaultAssociations">1</property>
     </properties>
 
     <!-- CONFIGURATION DESCRIPTIONS -->
@@ -64,17 +64,6 @@
           <option value="2">120 seconds</option>
           <option value="3">Continuous</option>
         </options>
-      </parameter>
-
-      <!-- ASSOCIATION DEFINITIONS -->
-      <parameter-group name="association">
-        <context>link</context>
-        <label>Association Groups</label>
-      </parameter-group>
-
-      <parameter name="group_1" type="text" groupName="association" multiple="true">
-        <label>1: Update Controller</label>
-        <multipleLimit>5</multipleLimit>
       </parameter>
 
     </config-description>

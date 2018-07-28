@@ -8,6 +8,7 @@
   <thing-type id="yale_yrd246_00_000" listed="false">
     <label>YRD246 Touchscreen deadbolt without keyway</label>
     <description>Touchscreen deadbolt without keyway</description>
+    <category>Lock</category>
 
     <!-- CHANNEL DEFINITIONS -->
     <channels>
@@ -27,6 +28,12 @@
         <label>Alarm (power)</label>
         <properties>
           <property name="binding:*:OnOffType">ALARM;type=POWER_MANAGEMENT</property>
+        </properties>
+      </channel>
+      <channel id="alarm_raw" typeId="alarm_raw">
+        <label>Alarm (raw)</label>
+        <properties>
+          <property name="binding:*:OnOffType">ALARM</property>
         </properties>
       </channel>
       <channel id="battery-level" typeId="system.battery-level">
@@ -49,6 +56,7 @@
       <property name="manufacturerId">0129</property>
       <property name="manufacturerRef">8002:0600</property>
       <property name="dbReference">594</property>
+      <property name="defaultAssociations">1</property>
     </properties>
 
     <!-- CONFIGURATION DESCRIPTIONS -->
@@ -131,6 +139,17 @@ Incorrect PINs lockout time<br /><h1>Overview</h1><p>Amount of time to lock-out 
           <option value="3">Disable Zwave</option>
         </options>
         <advanced>true</advanced>
+      </parameter>
+
+      <!-- ASSOCIATION DEFINITIONS -->
+      <parameter-group name="association">
+        <context>link</context>
+        <label>Association Groups</label>
+      </parameter-group>
+
+      <parameter name="group_1" type="text" groupName="association" multiple="true">
+        <label>1: Lifeline</label>
+        <multipleLimit>5</multipleLimit>
       </parameter>
 
     </config-description>

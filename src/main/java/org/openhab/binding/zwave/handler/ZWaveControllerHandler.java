@@ -17,6 +17,7 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.eclipse.smarthome.config.core.ConfigDescription;
 import org.eclipse.smarthome.config.core.Configuration;
 import org.eclipse.smarthome.config.core.validation.ConfigValidationException;
 import org.eclipse.smarthome.config.discovery.DiscoveryService;
@@ -26,8 +27,10 @@ import org.eclipse.smarthome.core.thing.Bridge;
 import org.eclipse.smarthome.core.thing.ChannelUID;
 import org.eclipse.smarthome.core.thing.ThingStatus;
 import org.eclipse.smarthome.core.thing.ThingStatusDetail;
+import org.eclipse.smarthome.core.thing.ThingTypeUID;
 import org.eclipse.smarthome.core.thing.UID;
 import org.eclipse.smarthome.core.thing.binding.BaseBridgeHandler;
+import org.eclipse.smarthome.core.thing.type.ThingType;
 import org.eclipse.smarthome.core.types.Command;
 import org.openhab.binding.zwave.ZWaveBindingConstants;
 import org.openhab.binding.zwave.ZWaveBindingConstants.I18nConstant;
@@ -35,6 +38,7 @@ import org.openhab.binding.zwave.discovery.ZWaveDiscoveryService;
 import org.openhab.binding.zwave.event.BindingEventDTO;
 import org.openhab.binding.zwave.event.BindingEventFactory;
 import org.openhab.binding.zwave.event.BindingEventType;
+import org.openhab.binding.zwave.internal.ZWaveConfigProvider;
 import org.openhab.binding.zwave.internal.ZWaveEventPublisher;
 import org.openhab.binding.zwave.internal.protocol.SerialMessage;
 import org.openhab.binding.zwave.internal.protocol.ZWaveController;
@@ -244,26 +248,18 @@ public abstract class ZWaveControllerHandler extends BaseBridgeHandler implement
                     continue;
                 }
 
-                if (cfg[1].equals("softreset") && value instanceof BigDecimal
-                        && ((BigDecimal) value).intValue() == ZWaveBindingConstants.ACTION_CHECK_VALUE) {
+                if (cfg[1].equals("softreset") && value instanceof Boolean && ((Boolean) value) == true) {
                     controller.requestSoftReset();
-
-                    value = new BigDecimal(0);
-                } else if (cfg[1].equals("hardreset") && value instanceof BigDecimal
-                        && ((BigDecimal) value).intValue() == ZWaveBindingConstants.ACTION_CHECK_VALUE) {
+                    value = false;
+                } else if (cfg[1].equals("hardreset") && value instanceof Boolean && ((Boolean) value) == true) {
                     controller.requestHardReset();
-
-                    value = new BigDecimal(0);
-                } else if (cfg[1].equals("exclude") && value instanceof BigDecimal
-                        && ((BigDecimal) value).intValue() == ZWaveBindingConstants.ACTION_CHECK_VALUE) {
+                    value = false;
+                } else if (cfg[1].equals("exclude") && value instanceof Boolean && ((Boolean) value) == true) {
                     controller.requestRemoveNodesStart();
-
-                    value = new BigDecimal(0);
-                } else if (cfg[1].equals("sync") && value instanceof BigDecimal
-                        && ((BigDecimal) value).intValue() == ZWaveBindingConstants.ACTION_CHECK_VALUE) {
+                    value = false;
+                } else if (cfg[1].equals("sync") && value instanceof Boolean && ((Boolean) value) == true) {
                     controller.requestRequestNetworkUpdate();
-
-                    value = new BigDecimal(0);
+                    value = false;
                 } else if (cfg[1].equals("suc") && value instanceof Boolean) {
                     // TODO: Do we need to set this immediately
                 } else if (cfg[1].equals("inclusiontimeout") && value instanceof BigDecimal) {

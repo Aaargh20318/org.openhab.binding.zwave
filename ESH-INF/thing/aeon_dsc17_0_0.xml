@@ -8,13 +8,14 @@
   <thing-type id="aeon_dsc17_00_000" listed="false">
     <label>DSC17 Micro Double Smart Switch</label>
     <description>Micro Double Smart Switch</description>
+    <category>WallSwitch</category>
 
     <!-- CHANNEL DEFINITIONS -->
     <channels>
       <channel id="switch_binary" typeId="switch_binary">
         <label>Switch</label>
         <properties>
-          <property name="binding:*:OnOffType">SWITCH_BINARY</property>
+          <property name="binding:*:OnOffType">SWITCH_BINARY,BASIC</property>
         </properties>
       </channel>
       <channel id="sensor_power" typeId="sensor_power">

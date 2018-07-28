@@ -122,16 +122,13 @@
         <default>240</default>
       </parameter>
 
-      <parameter name="config_3_1" type="integer" groupName="configuration">
+      <parameter name="config_3_1" type="integer" groupName="configuration"
+                 min="0" max="15">
         <label>3: Selective Reporting</label>
         <description><![CDATA[
-Enable selective reporting <br /><h1>Overview</h1><p>Enable selective reporting only when power change reaches a certain threshold or percentage set in 4-11 below. This is used to reduce network traffic.</p>
+Enable/disable selective reporting <br /><h1>Overview</h1><p>When selective reporting is disabled, unit will send a report every X seconds, as configured in items 101-103. When selective reporting is enabled, unit will send a report if thresholds in items 4-7, or percentages in items 8-11, are exceeded. This is used to reduce network traffic. Sum the following values for the source of the reports to be selectively reported:</p> <p>0        -&gt;   Disable Selective Reporting</p> <p>1        -&gt;   Whole HEM</p> <p>2        -&gt;   Clamp 1</p> <p>4        -&gt;   Clamp 2</p> <p>8        -&gt;   Clamp 3</p>
         ]]></description>
         <default>0</default>
-        <options>
-          <option value="0">Disable selective reporting</option>
-          <option value="1">Enable selective reporting</option>
-        </options>
       </parameter>
 
       <parameter name="config_4_2" type="integer" groupName="configuration"
@@ -241,6 +238,26 @@ Sum values of all wanted reports (see Overview)<br /><h1>Overview</h1><p>1    
         <label>Actions</label>
       </parameter-group>
 
+      <parameter name="config_100_4_wo" type="integer" groupName="configuration">
+        <label>100: Set parameter 101-103 to default values</label>
+        <description>Reset to default parameters number 101-103. Any value other than 0 will initiate this reset.</description>
+        <default>0</default>
+        <options>
+          <option value="0">No change</option>
+          <option value="1">Reset</option>
+        </options>
+      </parameter>
+
+      <parameter name="config_110_4_wo" type="integer" groupName="configuration">
+        <label>110: Set parameter 111-113 to default values</label>
+        <description>Reset to default parameters number 111-113. Any value other than 0 will initiate this reset.</description>
+        <default>0</default>
+        <options>
+          <option value="0">No change</option>
+          <option value="1">Reset</option>
+        </options>
+      </parameter>
+
       <parameter name="config_255_4_wo" type="integer" groupName="configuration">
         <label>255: Reset to Factory</label>
         <description><![CDATA[
@@ -249,7 +266,7 @@ Reset all settings to factory defaults<br /><h1>Overview</h1><p>Reset all settin
         <default>0</default>
         <options>
           <option value="0">Do nothing</option>
-          <option value="1">RESET TO FACTORY DEFAULTS</option>
+          <option value="1">Reset to factory defaults</option>
         </options>
         <advanced>true</advanced>
       </parameter>

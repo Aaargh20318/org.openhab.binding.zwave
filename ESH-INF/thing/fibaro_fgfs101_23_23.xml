@@ -8,24 +8,13 @@
   <thing-type id="fibaro_fgfs101_23_023" listed="false">
     <label>FGFS101 Flood Sensor</label>
     <description>Flood Sensor</description>
+    <category>Sensor</category>
 
     <!-- CHANNEL DEFINITIONS -->
     <channels>
-      <channel id="sensor_binary" typeId="sensor_binary">
-        <label>Binary Sensor</label>
-        <properties>
-          <property name="binding:*:OnOffType">SENSOR_BINARY,BASIC</property>
-        </properties>
-      </channel>
       <channel id="battery-level" typeId="system.battery-level">
         <properties>
           <property name="binding:*:PercentType">BATTERY</property>
-        </properties>
-      </channel>
-      <channel id="alarm_general" typeId="alarm_general">
-        <label>Alarm (general)</label>
-        <properties>
-          <property name="binding:*:OnOffType">SENSOR_ALARM;type=GENERAL</property>
         </properties>
       </channel>
       <channel id="alarm_flood" typeId="alarm_flood">
@@ -35,15 +24,21 @@
         </properties>
       </channel>
       <channel id="sensor_binary1" typeId="sensor_binary">
-        <label>Binary Sensor 1</label>
+        <label>Binary Sensor (flood)</label>
         <properties>
           <property name="binding:*:OnOffType">SENSOR_BINARY:1,BASIC:1</property>
         </properties>
       </channel>
       <channel id="sensor_temperature2" typeId="sensor_temperature">
-        <label>Sensor (temperature) 2</label>
+        <label>Sensor (temperature)</label>
         <properties>
           <property name="binding:*:DecimalType">SENSOR_MULTILEVEL:2,BASIC:2;type=TEMPERATURE</property>
+        </properties>
+      </channel>
+      <channel id="alarm_tamper2" typeId="alarm_tamper">
+        <label>Alarm (tamper)</label>
+        <properties>
+          <property name="binding:*:OnOffType">SENSOR_ALARM:2;type=GENERAL</property>
         </properties>
       </channel>
     </channels>
@@ -56,6 +51,7 @@
       <property name="manufacturerRef">0B00:1001,0B00:2001</property>
       <property name="versionMin">23.23</property>
       <property name="dbReference">408</property>
+      <property name="commandClass:SENSOR_ALARM:2">add</property>
       <property name="defaultAssociations">3</property>
     </properties>
 
@@ -96,10 +92,10 @@ LED indicator and acoustic alarm deactivation<br /><h1>Overview</h1><p>Parameter
         <description><![CDATA[
 Command frame sent by the Sensor in case flooding<br /><h1>Overview</h1><p>Parameter determines a type of command frame sent by the Sensor in case flooding has been detected or cancelled</p>
         ]]></description>
-        <default>-127</default>
+        <default>255</default>
         <options>
-          <option value="-127">BASIC_SET</option>
           <option value="0">ALARM WATER</option>
+          <option value="255">BASIC_SET</option>
         </options>
       </parameter>
 

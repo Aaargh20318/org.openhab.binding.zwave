@@ -7,7 +7,10 @@
 
   <thing-type id="eurotronic_cometz_00_000" listed="false">
     <label>CometZ Thermostatic Valve</label>
-    <description>Thermostatic Valve</description>
+    <description><![CDATA[
+Thermostatic Valve<br /><h1>Overview</h1><p>Comet Z-wave is a Z-Wave radio standard compatible energy-saving radiator thermostat.</p> <br /><h2>Inclusion Information</h2><p>Press and hold the button in the battery compartment of the Comet Z-wave for 5 seconds. The device moves into installation position in order to enable (de)installation.</p> <br /><h2>Exclusion Information</h2><p>Press and hold the button in the battery compartment of the Comet Z-wave for 5 seconds. The device moves into installation position in order to enable (de)installation.</p> <br /><h2>Wakeup Information</h2><p>Click the button in the battery compartment of the Comet Z-wave once.</p>
+    ]]></description>
+    <category>RadiatorControl</category>
 
     <!-- CHANNEL DEFINITIONS -->
     <channels>
@@ -31,13 +34,13 @@
         </properties>
       </channel>
       <channel id="thermostat_setpoint_furnace" typeId="thermostat_setpoint">
-        <label>Setpoint (furnace)</label>
+        <label>Temperature for Heat (Eco)</label>
         <properties>
           <property name="binding:*:DecimalType">THERMOSTAT_SETPOINT;type=FURNACE</property>
         </properties>
       </channel>
       <channel id="thermostat_setpoint_heating" typeId="thermostat_setpoint">
-        <label>Temperature for Mode Heat (Comfort)</label>
+        <label>Temperature for Heat (Comfort)</label>
         <properties>
           <property name="binding:*:DecimalType">THERMOSTAT_SETPOINT;type=HEATING</property>
         </properties>
@@ -54,7 +57,7 @@
       <property name="vendor">Eurotronics</property>
       <property name="modelId">CometZ</property>
       <property name="manufacturerId">0148</property>
-      <property name="manufacturerRef">0002:0001</property>
+      <property name="manufacturerRef">0002:0001,4672:BD41</property>
       <property name="dbReference">372</property>
     </properties>
 

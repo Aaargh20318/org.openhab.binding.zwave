@@ -10,13 +10,14 @@
     <description><![CDATA[
 On/Off Relay Switch<br /><h1>Overview</h1><p>Also marketed as GE / Jasco 12722.</p>
     ]]></description>
+    <category>WallSwitch</category>
 
     <!-- CHANNEL DEFINITIONS -->
     <channels>
       <channel id="switch_binary" typeId="switch_binary">
         <label>Switch</label>
         <properties>
-          <property name="binding:*:OnOffType">SWITCH_BINARY,BASIC</property>
+          <property name="binding:*:OnOffType">SWITCH_BINARY</property>
         </properties>
       </channel>
     </channels>

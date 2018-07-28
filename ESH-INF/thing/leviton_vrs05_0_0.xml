@@ -7,14 +7,17 @@
 
   <thing-type id="leviton_vrs05_00_000" listed="false">
     <label>VRS05 Scene Capable Switch</label>
-    <description>Scene Capable Switch</description>
+    <description><![CDATA[
+Scene Capable Switch<br /><h1>Overview</h1><p>Scene Capable Incandescent Switch, Single Pole (One location) or 3-Way (Multi-location), Incandescent- 5A – 120VAC, 60Hz <br /></p> <br /><h2>Inclusion Information</h2><p>While the Controller is in the Inclusion mode and the Locator LED is ON on the switch, press the push pad to turn on the switch. The Controller will verify inclusion and the Locator LED will turn OFF.</p> <br /><h2>Exclusion Information</h2><p>While the Controller is in the Exclusion mode and the locator LED is ON on the Dimmer, press the push pad to turn on the switch. The Controller will verify Exclusion and the locator LED will turn OFF.</p>
+    ]]></description>
+    <category>WallSwitch</category>
 
     <!-- CHANNEL DEFINITIONS -->
     <channels>
       <channel id="switch_binary" typeId="switch_binary">
         <label>Switch</label>
         <properties>
-          <property name="binding:*:OnOffType">SWITCH_BINARY</property>
+          <property name="binding:*:OnOffType">SWITCH_BINARY,BASIC</property>
         </properties>
       </channel>
       <channel id="scene_number" typeId="scene_number">
@@ -30,7 +33,7 @@
       <property name="vendor">Leviton</property>
       <property name="modelId">VRS05</property>
       <property name="manufacturerId">001D</property>
-      <property name="manufacturerRef">0F01:0209</property>
+      <property name="manufacturerRef">0F01:0209,0F01:0334</property>
       <property name="dbReference">366</property>
       <property name="commandClass:BASIC">setVersion=1</property>
       <property name="commandClass:SWITCH_BINARY">setVersion=1</property>
